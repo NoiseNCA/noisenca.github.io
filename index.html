@@ -4,7 +4,8 @@
 
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PJ6FBK1KKN"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SJ9P1D5C47"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -14,7 +15,7 @@
 
         gtag('js', new Date());
 
-        gtag('config', 'G-PJ6FBK1KKN');
+        gtag('config', 'G-SJ9P1D5C47');
     </script>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -27,7 +28,7 @@
     <meta name="keywords"
           content="DyhNCA, NCA, Textures, DynamiTextures, Synthesis, Dynamic Texture Synthesis, Neural Cellular Automata, Turing Patterns">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>NoiseNCA: Noise Improves Continuity of Neural Cellular Automata</title>
+    <title>NoiseNCA: Noisy Start Improves Continuity of Neural Cellular Automata</title>
 
 
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
@@ -62,6 +63,9 @@
     </script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+
+
+
 
 
 
@@ -109,7 +113,8 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered">
                 <div class="column has-text-centered">
-                    <h1 class="title is-1 publication-title">NoiseNCA: Noise Improves Continuity of Neural Cellular
+                    <h1 class="title is-1 publication-title">NoiseNCA: Noisy Start Improves Continuity of Neural
+                        Cellular
                         Automata</h1>
 
 
@@ -150,7 +155,15 @@
 <section class="section is-light">
     <div class="container is-max-desktop">
 
-        <div class="columns is-centered has-text-centered">
+        <div class="is-centered has-text-centered">
+            <p style="font-size: 14pt">
+                In addition to the common interactive controls in NCA models such as <i>Cell Alignment</i> and <i>Rotation</i>,
+                and <i>Regeneration Brush</i>, <b>NoiseNCA</b> allows continuous control over the rate of pattern
+                formation and the scale of the synthesized pattern using the $\Delta t$ and $\Delta x$ sliders,
+                respectively.
+            </p>
+
+            <br>
         </div>
 
         <div class="l-body-outset grid" id="demo">
@@ -314,6 +327,16 @@
                 <video id="multiscale_video" autoplay controls muted loop playsinline height="100%" width="100%">
                 </video>
             </div>
+
+
+        </div>
+        <div class="is-centered has-text-centered">
+            <p style="font-size: 14pt">
+                By varying the value of $\Delta x$ across the image, NoiseNCA allows creating Multiscale patterns within
+                a single image. Notice how the scale of the patterns seamlessly changes from left to right.
+            </p>
+
+            <br>
         </div>
     </div>
 </section>
