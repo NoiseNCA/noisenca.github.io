@@ -275,7 +275,9 @@ const PROGRAMS = {
     perception: `
     const highp mat3 sobelX = mat3(-1.0, 0.0, 1.0, -2.0, 0.0, 2.0, -1.0, 0.0, 1.0);
     const highp mat3 sobelY = mat3(-1.0,-2.0,-1.0, 0.0, 0.0, 0.0, 1.0, 2.0, 1.0);
-    const highp mat3 lap = mat3(1.0, 2.0, 1.0, 2.0, 4.0-16.0, 2.0, 1.0, 2.0, 1.0);
+    
+    const highp mat3 lapX = mat3(0.5, 0.0, 0.5, 2.0, -6.0, 2.0, 0.5, 0.0, 0.5);
+    const highp mat3 lapY = mat3(0.5, 2.0, 0.5, 0.0, -6.0, 0.0, 0.5, 2.0, 0.5);
 
     vec4 conv3x3(vec2 xy, float inputCh, mat3 filter) {
         highp vec4 a = vec4(0.0);
@@ -288,7 +290,7 @@ const PROGRAMS = {
     }
 
     uniform float u_seed, u_updateProbability;
-    uniform float u_scale;
+    uniform float u_dx, u_dy;
     
     void main() {
         vec2 xy = getOutputXY();
@@ -311,18 +313,26 @@ const PROGRAMS = {
         if (filterBand < 0.5) {
             setOutput(u_input_read(xy, inputCh));
         } else if (filterBand < 2.5) {
-            highp vec4 dx = conv3x3(xy, inputCh, sobelX);
-            highp vec4 dy = conv3x3(xy, inputCh, sobelY);
+            // highp vec4 dx = conv3x3(xy, inputCh, sobelX);
+            // highp vec4 dy = conv3x3(xy, inputCh, sobelY);
+            // highp vec2 dir = getCellDirection(xy);
+            // float s = dir.x, c = dir.y;
+            // highp vec4 res = filterBand < 1.5 ? dx*c-dy*s / u_dx: dx*s+dy*c / u_dy;
+            // setOutput(res);
+            
+            highp vec4 dx = conv3x3(xy, inputCh, sobelX) / u_dx;
+            highp vec4 dy = conv3x3(xy, inputCh, sobelY) / u_dy;
             highp vec2 dir = getCellDirection(xy);
             float s = dir.x, c = dir.y;
-            highp vec4 res = filterBand < 1.5 ? dx*c-dy*s : dx*s+dy*c;
-            setOutput(res / u_scale);
+            highp vec4 res = filterBand < 1.5 ? dx*c-dy*s: dx*s+dy*c;
+            setOutput(res);
         
         
         } else {
+            mat3 lap = lapX / (u_dx * u_dx) + lapY / (u_dy * u_dy);
             highp vec4 res = conv3x3(xy, inputCh, lap);
 
-            setOutput(res / (u_scale * u_scale));
+            setOutput(res);
         }
     }`,
     dense: `
@@ -428,7 +438,7 @@ const PROGRAMS = {
     update: `
     ${defInput('u_update')}
     uniform float u_seed, u_updateProbability;
-    uniform float u_rate;
+    uniform float u_dt;
     varying vec2 uv;
 
     void main() {
@@ -451,7 +461,7 @@ const PROGRAMS = {
         update = u_update_readUV(uv);    
         // }
       #endif
-      setOutput(state + update * u_rate);
+      setOutput(state + update * u_dt);
     }`,
     vis: `
     uniform float u_raw;
@@ -702,8 +712,9 @@ export class NoiseNCA {
         this.circular_padding = true;
 
         this.rotationAngle = 0.0;
-        this.rate = 1.0;
-        this.scale = 1.0;
+        this.dt = 1.0;
+        this.dx = 1.0;
+        this.dy = 1.0;
         this.alignment = 0;
         this.fuzz = 30.0;
         this.perceptionCircle = 0.0;
@@ -837,7 +848,7 @@ export class NoiseNCA {
         if (stage == 'all' || stage == 'Perception') {
             this.runLayer(self.progs.perception, this.buf.perception0, {
                 u_input: this.buf.state, u_angle: this.rotationAngle / 180.0 * Math.PI,
-                u_alignment: this.alignment, u_hexGrid: this.hexGrid, u_scale: this.scale,
+                u_alignment: this.alignment, u_hexGrid: this.hexGrid, u_dx: this.dx, u_dy: this.dy,
                 u_seed: seed, u_updateProbability: this.updateProbability,
             });
         }
@@ -848,14 +859,13 @@ export class NoiseNCA {
         for (let i = 0; i < this.layers.length; ++i) {
             if (stage == 'all' || stage == `FC Layer${i + 1}`)
                 var relu = i == 0 ? true : false;
-            var rate = i == 0 ? 1.0 : this.rate;
-            this.runDense(this.buf[`layer${i}`], inputBuf, this.layers[i], relu, seed, rate);
+            this.runDense(this.buf[`layer${i}`], inputBuf, this.layers[i], relu, seed);
             inputBuf = this.buf[`layer${i}`];
         }
         if (stage == 'all' || stage == 'Update') {
             this.runLayer(this.progs.update, this.buf.newState, {
                 u_input: this.buf.state, u_update: inputBuf,
-                u_unshuffleTex: this.unshuffleTex, u_rate: this.rate,
+                u_unshuffleTex: this.unshuffleTex, u_dt: this.dt,
                 u_seed: seed, u_updateProbability: this.updateProbability
             });
         }

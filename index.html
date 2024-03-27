@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="./static/css/bulma.min.css">
     <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
     <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-        <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
@@ -46,7 +46,7 @@
     <link rel="icon" href="./static/images/favicon.png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
 
     <!--    <script src="./static/js/bulma-carousel.min.js"></script>-->
     <!--    <script src="./static/js/bulma-slider.min.js"></script>-->
@@ -64,6 +64,9 @@
     </script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+
+
+
 
 
 
@@ -114,7 +117,8 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered">
                 <div class="column has-text-centered">
-                    <h1 class="title is-2 publication-title">NoiseNCA: Noisy Seed Improves Spatio-Temporal Continuity of Neural
+                    <h1 class="title is-2 publication-title">NoiseNCA: Noisy Seed Improves Spatio-Temporal Continuity of
+                        Neural
                         Cellular Automata</h1>
 
 
@@ -144,10 +148,7 @@
                 </div>
 
 
-
             </div>
-
-
 
 
         </div>
@@ -162,7 +163,7 @@
                                   <span>Supplementary</span>
                                 </a>
                             </span>
-            </div>
+    </div>
     </div>
     </div>
 </section>
@@ -175,7 +176,7 @@
             <p style="font-size: 14pt">
                 In addition to the common interactive controls in NCA models such as <i>Cell Alignment</i> and <i>Rotation</i>,
                 and <i>Regeneration Brush</i>, <b>NoiseNCA</b> allows continuous control over the rate of pattern
-                formation and the scale of the synthesized pattern using the $\Delta t$ and $\Delta x$ sliders,
+                formation and the scale of the synthesized pattern using the $\Delta t$ and $(\Delta x, \Delta y)$ sliders,
                 respectively.
             </p>
 
@@ -217,6 +218,38 @@
 
                     </div>
 
+                    <div style="text-align: center; background: #eee;">
+                        <label class="toggler-wrapper style-19">
+
+                            <input type="checkbox" id="scaling_mode" checked="checked">
+                            <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                            </div>
+
+
+                        </label>
+
+
+<!--                        <br><br><br>-->
+<!--                        &nbsp; Scaling Mode &nbsp;<hr>-->
+
+
+                    </div>
+
+
+                    <div>
+
+                        <input type="range" id="dx" min="-0.585" max="1.0" step="0.001" value="0.0"></br>$\Delta x
+                        = $
+                        <label
+                                id="dxLabel"></label>
+
+                        <input type="range" id="dy" min="-0.585" max="1.0" step="0.001" value="0.0"></br>$\Delta y
+                        = $
+                        <label
+                                id="dyLabel"></label>
+                    </div>
+
 
                     <div id='brushSelect' class="button-group">
                         <label>
@@ -232,22 +265,19 @@
                                 src="images/brush_L.png" width="38px" height="38px"/>
                         </label>
                         <br> Brush Size
+
                     </div>
 
                     <div>
-                        <input type="range" id="rate" min="0.01" max="1.0" step="0.01" value="1.0"></br>$\Delta t =
+                        <input type="range" id="dt" min="0.01" max="1.0" step="0.01" value="1.0"></br>$\Delta t =
                         $
                         <label
-                                id="rateLabel"></label><br>
-
-
-                        <input type="range" id="scale" min="-0.585" max="1.585" step="0.001" value="0.0"></br>$\Delta x
-                        = $
-                        <label
-                                id="scaleLabel"></label>
+                                id="dtLabel"></label><br>
 
 
                     </div>
+
+
                     <div id='alignSelect' class="button-group">
                         <label>
                             <input type="radio" checked="checked" name="align"><img
@@ -302,6 +332,17 @@
 
 
                 </div>
+                        <div class="is-left has-text-left">
+            <p style="font-size: 10pt">
+                When changing $(\Delta x, \Delta y)$, we automatically adjust the value of $\Delta t$ to avoid
+                the Euler integration from overshooting.
+                <br>
+                In the Isotropic mode, the scaling factors are forced to be equal $\Delta x = \Delta y$.
+
+            </p>
+
+            <br>
+        </div>
 
 
             </div>
@@ -348,7 +389,7 @@
         </div>
         <div class="is-centered has-text-centered">
             <p style="font-size: 14pt">
-                By varying the value of $\Delta x$ across the image, NoiseNCA allows creating Multiscale patterns within
+                By varying the value of $(\Delta x, \Delta y)$ across the image, NoiseNCA allows creating Multiscale patterns within
                 a single image. Notice how the scale of the patterns seamlessly changes from left to right.
             </p>
 
