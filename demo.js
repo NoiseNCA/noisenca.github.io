@@ -69,8 +69,10 @@ export function createDemo(divId) {
         zoom: 1.0,
         alignment: 0,
         rotationAngle: 0,
-        rate: 1.0,
-        scale: 1.0,
+        dt: 1.0,
+        dx: 1.0,
+        dy: 1.0,
+        isotropic: true,
 
         texture_name: "bubbly_0101",
 
@@ -249,6 +251,62 @@ export function createDemo(divId) {
     }
 
 
+    function updateDx() {
+        params.isotropic = $('#scaling_mode').checked;
+        let dx = parseFloat($('#dx').value);
+        let dx_ratio = (dx - $('#dx').min) / ($('#dx').max - $('#dx').min)
+        $('#dx').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (dx_ratio * 100) + "%, #fff " + (dx_ratio * 100) + "%, #fff 100%)";
+
+
+        if (params.isotropic) {
+            let dy = dx;
+            $('#dy').value = dy;
+            $('#dy').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (dx_ratio * 100) + "%, #fff " + (dx_ratio * 100) + "%, #fff 100%)";
+            params.dy = Math.pow(2.0, -dy);
+            $('#dyLabel').innerHTML = params.dy.toFixed(2);
+
+        }
+
+        params.dx = Math.pow(2.0, -dx);
+
+        $('#dxLabel').innerHTML = params.dx.toFixed(2);
+        updateDt();
+
+    }
+
+    function updateDy() {
+        params.isotropic = $('#scaling_mode').checked;
+        let dy = parseFloat($('#dy').value);
+        let dy_ratio = (dy - $('#dy').min) / ($('#dy').max - $('#dy').min)
+        $('#dy').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (dy_ratio * 100) + "%, #fff " + (dy_ratio * 100) + "%, #fff 100%)";
+
+
+        if (params.isotropic) {
+            let dx = dy;
+            $('#dx').value = dx;
+            $('#dx').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (dy_ratio * 100) + "%, #fff " + (dy_ratio * 100) + "%, #fff 100%)";
+            params.dx = Math.pow(2.0, -dx);
+            $('#dxLabel').innerHTML = params.dx.toFixed(2);
+
+        }
+
+        params.dy = Math.pow(2.0, -dy);
+        $('#dyLabel').innerHTML = params.dy.toFixed(2);
+
+        updateDt();
+
+    }
+
+
+    function updateDt() {
+
+        params.dt = parseFloat($('#dt').value);
+        params.dt = Math.min(params.dt, params.dx * params.dx, params.dy * params.dy);
+        $('#dt').value = params.dt;
+        $('#dtLabel').innerHTML = params.dt.toFixed(2);
+        $('#dt').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (params.dt * 100) + "%, #fff " + (params.dt * 100) + "%, #fff 100%)";
+    }
+
     function updateUI() {
         $$('#model-hints span').forEach(e => {
             e.style.display = e.id.startsWith(experiment) ? "inline" : "none";
@@ -277,17 +335,11 @@ export function createDemo(divId) {
         params.rotationAngle = parseInt($('#rotation').value);
         $('#rotationLabel').innerHTML = params.rotationAngle + "&deg;";
 
-        params.scale = parseFloat($('#scale').value);
-        let scale_ratio = (params.scale - $('#scale').min) / ($('#scale').max - $('#scale').min)
-        $('#scale').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (scale_ratio * 100) + "%, #fff " + (scale_ratio * 100) + "%, #fff 100%)";
-        params.scale = Math.pow(2.0, -params.scale);
-        $('#scaleLabel').innerHTML = params.scale.toFixed(2);
 
-        params.rate = parseFloat($('#rate').value);
-        params.rate = Math.min(params.rate, (params.scale * params.scale))
-        $('#rate').value = params.rate;
-        $('#rateLabel').innerHTML = params.rate.toFixed(2);
-        $('#rate').style.background = "linear-gradient(to right, indianred 0%, greenyellow " + (params.rate * 100) + "%, #fff " + (params.rate * 100) + "%, #fff 100%)";
+
+
+
+
 
 
         $('#zoomOut').classList.toggle('disabled', params.zoom <= 1.0);
@@ -297,7 +349,7 @@ export function createDemo(divId) {
     function Screenshot(name) {
         const uri = canvas.toDataURL();
         var link = document.createElement("a");
-        link.download = params.texture_name + "-scale" + params.scale + ".png";
+        link.download = params.texture_name + "-dx" + params.dx + ".png";
         link.href = uri;
         document.body.appendChild(link);
         link.click();
@@ -319,8 +371,6 @@ export function createDemo(divId) {
 
             ca.clearCircle(0, 0, 1000);
 
-            // ca.clearCircle(0, 0, 1000);
-            // ca.paint(0, 0, 10000, params.model, [0, 0]);
         };
         // $('#benchmark').onclick = () => {
         //     ca.benchmark();
@@ -345,19 +395,7 @@ export function createDemo(divId) {
                 }
             }
         });
-        $$('#configSelect input').forEach((sel, i) => {
-            sel.onchange = () => {
-                // if (i == 0) {
-                //     params.modelSet = params.modelSet.replace("large", "small");
-                //     params.model_type = "small";
-                // } else {
-                //     params.modelSet = params.modelSet.replace("small", "large");
-                //     params.model_type = "large";
-                // }
 
-                // updateCA();
-            }
-        });
         $$('#gridSelect input').forEach(sel => {
             sel.onchange = () => {
                 params.hexGrid = sel.id == 'gridHex';
@@ -370,12 +408,19 @@ export function createDemo(divId) {
         $('#resolution').onchange = updateUI;
         $('#resolution').oninput = updateUI;
 
-        $('#rate').onchange = updateUI;
-        $('#rate').oninput = updateUI;
+        $('#dt').onchange = updateDt;
+        $('#dt').oninput = updateDt;
 
 
-        $('#scale').onchange = updateUI;
-        $('#scale').oninput = updateUI;
+        $('#dx').onchange = updateDx;
+        $('#dx').oninput = updateDx;
+
+        $('#dy').onchange = updateDy;
+        $('#dy').oninput = updateDy;
+
+        $('#scaling_mode').onchange = updateDx;
+        $('#scaling_mode').oninput = updateDx;
+
 
         $('#zoomIn').onclick = () => {
             if (params.zoom < maxZoom) {
@@ -429,9 +474,14 @@ export function createDemo(divId) {
         if (firstTime) {
             createGUI(models);
             initUI();
+            updateUI();
+            updateDx();
+            updateDy();
             requestAnimationFrame(render);
+
         }
-        updateUI();
+
+
     }
 
     // updateCA();
@@ -456,8 +506,9 @@ export function createDemo(divId) {
 
         ca.rotationAngle = params.rotationAngle;
         ca.alignment = params.alignment;
-        ca.rate = params.rate;
-        ca.scale = params.scale;
+        ca.dt = params.dt;
+        ca.dx = params.dx;
+        ca.dy = params.dy
         // ca.hexGrid = params.hexGrid;
 
         if (!paused) {
