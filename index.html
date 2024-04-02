@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="./static/css/bulma.min.css">
     <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
     <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-        <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
@@ -46,7 +46,7 @@
     <link rel="icon" href="./static/images/favicon.png">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
 
     <!--    <script src="./static/js/bulma-carousel.min.js"></script>-->
     <!--    <script src="./static/js/bulma-slider.min.js"></script>-->
@@ -64,6 +64,7 @@
     </script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+
 
 
 
@@ -114,7 +115,8 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered">
                 <div class="column has-text-centered">
-                    <h1 class="title is-2 publication-title">NoiseNCA: Noisy Seed Improves Spatio-Temporal Continuity of Neural
+                    <h1 class="title is-2 publication-title">NoiseNCA: Noisy Seed Improves Spatio-Temporal Continuity of
+                        Neural
                         Cellular Automata</h1>
 
 
@@ -144,16 +146,13 @@
                 </div>
 
 
-
             </div>
-
-
 
 
         </div>
     </div>
-    <div class="columns is-centered">
-                <span class="link-block">
+    <div class="columns is-centered has-text-centered">
+                <span class="link-block is-centered">
                                 <a href="supplementary/"
                                    class="external-link button is-normal is-rounded">
                                   <span class="icon">
@@ -162,9 +161,8 @@
                                   <span>Supplementary</span>
                                 </a>
                             </span>
-            </div>
     </div>
-    </div>
+
 </section>
 
 
@@ -368,22 +366,22 @@
                     <p>
                         Neural Cellular Automata (NCA) is a class of Cellular Automata where the update rule is
                         parameterized by a neural network that can be trained using gradient descent.
-                        In this paper, we focus on NCA models used for texture synthesis where the update rule is
+                        In this paper, we focus on NCA models used for texture synthesis, where the update rule is
                         inspired by partial differential equations (PDEs) describing reaction-diffusion systems. To
                         train the NCA model, the spatio-termporal domain is discretized, and Euler integration is used
-                        to numerically simulate the PDE. However, whether a trained NCA truly learns a continuous
+                        to numerically simulate the PDE. However, whether a trained NCA truly learns the continuous
                         dynamic described by the corresponding PDE or merely overfits the discretization used in
                         training remains an open question. We study NCA models at the limit where space-time
                         discretization approaches continuity.
-                        We find that existing NCA models tend to overfit the training discretization especially in the
-                        proximity of the initial condition (also called "seed"). To address this, we propose a solution
-                        based on utilizing uniform noise as the initial condition. We demonstrate the effectiveness of
-                        our approach in preserving the consistency of NCA dynamics across a wide range of
-                        spatio-temporal granularities. Our improved NCA model enables two new test-time interactions by
-                        allowing a continuous control over the speed of pattern formation and the scale of the
-                        synthesized patterns. We demonstrate this new NCA feature in our online interactive demo. Our
-                        work suggests that NCA models can learn continuous dynamics and opens new venues for NCA
-                        research from a dynamical systems' perspective.
+                        We find that existing NCA models tend to overfit the training discretization, especially in the
+                        proximity of the initial condition, also called "seed". To address this, we propose a solution
+                        that utilizes uniform noise as the initial condition. We demonstrate the effectiveness of our
+                        approach in preserving the consistency of NCA dynamics across a wide range of spatio-temporal
+                        granularities. Our improved NCA model enables two new test-time interactions by allowing
+                        continuous control over the speed of pattern formation and the scale of the synthesized
+                        patterns. We demonstrate this new NCA feature in our interactive online demo. Our work reveals
+                        that NCA models can learn continuous dynamics and opens new venues for NCA research from a
+                        dynamical systems' perspective.
                     </p>
 
                 </div>
