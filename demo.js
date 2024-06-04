@@ -20,6 +20,7 @@ export function createDemo(divId) {
     let ca = null;
     let experiment = 'ex3';
     let paused = false;
+    let recording = false;
 
     const canvas = $('#demo-canvas');
     canvas.width = W * 6; //so we can render hexells
@@ -89,6 +90,25 @@ export function createDemo(divId) {
 
     const initTexture = "bubbly_0101";
 
+    var videoStream = canvas.captureStream(30);
+    var mediaRecorder = new MediaRecorder(videoStream);
+    var chunks = [];
+
+    mediaRecorder.ondataavailable = function (e) {
+        chunks.push(e.data);
+    }
+
+    mediaRecorder.onstop = function (e) {
+        var blob = new Blob(chunks, {'type': 'video/mp4'});
+        chunks = [];
+        var videoURL = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.download = params.texture_name;
+        link.href = videoURL;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
     initMetaData();
 
@@ -346,25 +366,38 @@ export function createDemo(divId) {
         $('#zoomIn').classList.toggle('disabled', params.zoom >= maxZoom);
     }
 
-    function Screenshot(name) {
-        const uri = canvas.toDataURL();
-        var link = document.createElement("a");
-        link.download = params.texture_name + "-dx" + params.dx + ".png";
-        link.href = uri;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        // delete link;
-    }
+    // function Screenshot(name) {
+    //     const uri = canvas.toDataURL();
+    //     var link = document.createElement("a");
+    //     link.download = params.texture_name + "-dx" + params.dx + ".png";
+    //     link.href = uri;
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //     // delete link;
+    // }
 
     function initUI() {
-        $('#screenshot').onclick = () => {
-            Screenshot();
+        $('#record').onclick = () => {
+            recording = !recording
+            $('#record_on').style.display = recording ? "inline" : "none";
+            $('#record_off').style.display = !recording ? "inline" : "none";
+            if (recording) {
+                mediaRecorder.start();
+            } else {
+                mediaRecorder.stop();
+            }
         };
+
+        // $('#screenshot').onclick = () => {
+        //     Screenshot();
+        // };
 
         $('#play-pause').onclick = () => {
             paused = !paused;
-            updateUI();
+            $('#play').style.display = paused ? "inline" : "none";
+            $('#pause').style.display = !paused ? "inline" : "none";
+            // updateUI();
         };
         $('#reset').onclick = () => {
             ca.paint(0, 0, 10000, 0, [0.5, 0.5]);

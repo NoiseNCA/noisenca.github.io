@@ -165,7 +165,8 @@
             <p style="font-size: 14pt">
                 In addition to the common interactive controls in NCA models such as <i>Cell Alignment</i> and <i>Rotation</i>,
                 and <i>Regeneration Brush</i>, <b>NoiseNCA</b> allows continuous control over the rate of pattern
-                formation and the scale of the synthesized pattern using the $\Delta t$ and $(\Delta x, \Delta y)$ sliders,
+                formation and the scale of the synthesized pattern using the $\Delta t$ and $(\Delta x, \Delta y)$
+                sliders,
                 respectively.
             </p>
 
@@ -180,8 +181,8 @@
                     <div class="tooltip">
                         <span id="play-pause">
 
-              <svg class="demo-icon" id="play"><use xlink:href="#playIcon"></use></svg>
-              <svg class="demo-icon" id="pause" style="display: none;"><use xlink:href="#pauseIcon"></use></svg>
+              <svg class="demo-icon" id="play" style="display: none;"><use xlink:href="#playIcon"></use></svg>
+              <svg class="demo-icon" id="pause"><use xlink:href="#pauseIcon"></use></svg>
             </span>
                         <svg class="demo-icon" id="reset">
                             <use xlink:href="#resetIcon"></use>
@@ -192,9 +193,17 @@
                         <svg class="demo-icon disabled" id="zoomOut">
                             <use xlink:href="#zoomOutIcon"></use>
                         </svg>
-                        <label>
-                            <img id="screenshot" src="images/screenshot.png" width="30px" height="30px"/>
-                        </label>
+
+                        <span id="record">
+                                <img id="record_off" src="images/record_off.png" width="40px" height="40px"
+                                     style="padding: 4px; padding-bottom: 2px"/>
+                                <img id="record_on" src="images/record_on.png" width="40px" height="40px"
+                                     style="padding: 4px; padding-bottom: 2px; display: none;"/>
+                        </span>
+
+<!--                        <label>-->
+<!--                            <img id="screenshot" src="images/screenshot.png" width="30px" height="30px"/>-->
+<!--                        </label>-->
 
                         <!--                            <label><img id="benchmark"-->
                         <!--                                        src="images/benchmark.png" width="50px" height="50px"/></label>-->
@@ -219,8 +228,8 @@
                         </label>
 
 
-<!--                        <br><br><br>-->
-<!--                        &nbsp; Scaling Mode &nbsp;<hr>-->
+                        <!--                        <br><br><br>-->
+                        <!--                        &nbsp; Scaling Mode &nbsp;<hr>-->
 
 
                     </div>
@@ -321,17 +330,17 @@
 
 
                 </div>
-                        <div class="is-left has-text-left">
-            <p style="font-size: 10pt">
-                When changing $(\Delta x, \Delta y)$, we automatically adjust the value of $\Delta t$ to avoid
-                the Euler integration from overshooting.
-                <br>
-                In the Isotropic mode, the scaling factors are forced to be equal $\Delta x = \Delta y$.
+                <div class="is-left has-text-left">
+                    <p style="font-size: 10pt">
+                        When changing $(\Delta x, \Delta y)$, we automatically adjust the value of $\Delta t$ to avoid
+                        the Euler integration from overshooting.
+                        <br>
+                        In the Isotropic mode, the scaling factors are forced to be equal $\Delta x = \Delta y$.
 
-            </p>
+                    </p>
 
-            <br>
-        </div>
+                    <br>
+                </div>
 
 
             </div>
@@ -378,7 +387,8 @@
         </div>
         <div class="is-centered has-text-centered">
             <p style="font-size: 14pt">
-                By varying the value of $(\Delta x, \Delta y)$ across the image, NoiseNCA allows creating Multiscale patterns within
+                By varying the value of $(\Delta x, \Delta y)$ across the image, NoiseNCA allows creating Multiscale
+                patterns within
                 a single image. Notice how the scale of the patterns seamlessly changes from left to right.
             </p>
 
