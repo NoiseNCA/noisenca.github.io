@@ -414,6 +414,7 @@
 
 
         </div>
+
         <div class="columns is-centered has-text-centered">
             <div class="column">
                 <h2 class="title is-5">Multiscale Video</h2>
@@ -431,6 +432,30 @@
             </p>
 
             <br>
+        </div>
+
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-four-fifths">
+                <div class="notification is-warning" style="text-align: left;">
+                    <p style="font-size: 12pt;">
+                        <b>Update:</b> we found that the decomposition of the discrete Laplacian into separate
+                        <code>lapX</code> and <code>lapY</code> filters (used to support independent $\Delta x$ and
+                        $\Delta y$ scaling) was incorrect, both in this demo and in the paper. For the isotropic
+                        Laplacian kernel
+                        $\left[\begin{smallmatrix}1&amp;2&amp;1\\2&amp;-12&amp;2\\1&amp;2&amp;1\end{smallmatrix}\right]$,
+                        the correct separable decomposition is
+                        $\text{lapX}=\left[\begin{smallmatrix}0.5&amp;-1&amp;0.5\\3&amp;-6&amp;3\\0.5&amp;-1&amp;0.5\end{smallmatrix}\right]$
+                        and
+                        $\text{lapY}=\left[\begin{smallmatrix}0.5&amp;3&amp;0.5\\-1&amp;-6&amp;-1\\0.5&amp;3&amp;0.5\end{smallmatrix}\right]$,
+                        not the
+                        $\left[\begin{smallmatrix}0.5&amp;0&amp;0.5\\2&amp;-6&amp;2\\0.5&amp;0&amp;0.5\end{smallmatrix}\right]$
+                        ,
+                        $\left[\begin{smallmatrix}0.5&amp;2&amp;0.5\\0&amp;-6&amp;0\\0.5&amp;2&amp;0.5\end{smallmatrix}\right]$
+                        pair we used before. The demo above now uses the corrected decomposition; this only changes
+                        results where $\Delta x \neq \Delta y$.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </section>
